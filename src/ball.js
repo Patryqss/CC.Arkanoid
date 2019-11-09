@@ -1,4 +1,6 @@
-import { ctx, cw, ch } from './main';
+import { ctx, cw, ch, canvas } from './main';
+import { timingSafeEqual } from 'crypto';
+import { xPaddle, lPaddle } from './main';
 
 class Ball {
     constructor(x, height) {
@@ -7,6 +9,8 @@ class Ball {
         this.ySpeed = 0;
         this.x = x;
         this.y = ch - height - this.size;
+        this.yBottom = this.y;
+        this.isGameStart = false;
     }
 
     move() {
@@ -19,22 +23,46 @@ class Ball {
         ctx.arc(this.x, this.y, this.size, 0, 2 * Math.PI);
         ctx.fill();
     }
+
+    // wystartowanie piłką
+    startBall() {
+        // Jeśli gra się nie zaczeła, startuje piłkę
+        if (!this.isGameStart) {
+            const vSpeed = 8; // Prędkość piłki
+            // losowe wartości początkowe dla x
+            let randomSpeed = Math.floor(Math.random() * (vSpeed - 1) * 2 - (vSpeed - 1));
+            if (randomSpeed === 0) { // zapobiega pionowego startu
+                randomSpeed += 1;
+            }
+            this.xSpeed = randomSpeed;
+            // dobranie y tak aby w zależności od x prędkość wynosiła vSpeed.  y^2 = v^2 - x^2
+            this.ySpeed = -Math.abs(Math.sqrt(Math.pow(-vSpeed, 2) - Math.pow(this.xSpeed, 2)));
+            console.log('speed x- ' + this.xSpeed + ' speed y - ' + this.ySpeed);
+
+            this.isGameStart = true;
+        }
+    }
+
+    // funcja sprawdza czy piłka uderzy w paletkę
+    onPaddle(x) {
+        if ((x <= xPaddle + lPaddle) && (x >= xPaddle)) {
+            console.log('trafienie');
+            return true;
+        }
+        console.log('pódło');
+        return false;
+    }
+
     onHit() {
         //Check if hit sth
-
-        let margin = Math.floor((Math.random() * 2) - 1); // random func. -1 to 1
-
-        if (this.y < 0 + this.size) {
-            this.ySpeed = 5;
-        } else if (this.y > 560) {
-            this.ySpeed = -5;
+        // Odbicie od ściany górnej i dolnej
+        if ((this.y > this.yBottom) || this.y < this.size) {
+            this.onPaddle(this.x);
+            this.ySpeed = -this.ySpeed;
         }
-
-        if (this.x < 0 + this.size) {
-            this.xSpeed = 2;
-        } else if (this.x > 600 - this.size) {
-            this.xSpeed = -2 + margin;
-            console.log('margin => ' + margin)
+        // Odbicie od ścian bocznych
+        if (this.x > cw - this.size || this.x < this.size) {
+            this.xSpeed = -this.xSpeed;
         }
     }
 }
