@@ -13,14 +13,14 @@ class Paddle {
   }
   movePaddle(e){
     switch(e.keyCode){
-      case: 37: {
-        if (this.x > 0){
+      case 37: {
+        if (this.x > 0 && this.x < cw){
           this.x -= this.xSpeed;
         }
         break;
       }
       case 39: {
-        if (this.x < 0){
+        if (this.x < 0 && this.x < cw){
           this.x += this.xSpeed;
         }
         break;
