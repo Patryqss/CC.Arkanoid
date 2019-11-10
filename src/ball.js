@@ -49,7 +49,7 @@ class Ball {
             console.log('trafienie');
             return true;
         }
-        console.log('pódło');
+        console.log('pudło');
         return false;
     }
 
