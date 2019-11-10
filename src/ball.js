@@ -17,7 +17,7 @@ class Ball {
         this.y += this.ySpeed;
     }
     draw() {
-        ctx.fillStyle = 'red';
+        ctx.fillStyle = '#E1E634';
         ctx.beginPath();
         ctx.arc(this.x, this.y, this.size, 0, 2 * Math.PI);
         ctx.fill();
@@ -55,9 +55,16 @@ class Ball {
     onHit(paddle) {
         //Check if hit sth
         // Odbicie od ściany górnej i dolnej
-        if ((this.y > this.yBottom) || this.y < this.size) {
-            this.onPaddle(paddle, this.x);
+        if (this.y < this.size) {
             this.ySpeed = -this.ySpeed;
+        }
+
+        if ((this.y > this.yBottom)) {
+            if (this.onPaddle(paddle, this.x)) {
+                this.ySpeed = -this.ySpeed;
+            } else if (this.y > ch) {
+                this.ySpeed = -this.ySpeed;
+            }
         }
         // Odbicie od ścian bocznych
         if (this.x > cw - this.size || this.x < this.size) {
