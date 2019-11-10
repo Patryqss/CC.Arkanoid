@@ -8,7 +8,7 @@ class Paddle {
     this.spaceFromBorder = 10;
   }
   draw() {
-    ctx.fillStyle = 'white';
+    ctx.fillStyle = '#CA540D';
     ctx.fillRect(this.x, ch - this.height, this.length, this.height - this.spaceFromBorder);
   }
   movePaddle(e){
