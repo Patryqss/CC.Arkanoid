@@ -9,14 +9,11 @@ export const ch = canvas.height;
 const paddle = new Paddle(cw / 2);
 const ball = new Ball(paddle.x + paddle.length / 2, paddle.height);
 
-export const xPaddle = paddle.x;
-export const lPaddle = paddle.length;
-
 const gameLoop = () => {
     ctx.fillStyle = 'black';
     ctx.fillRect(0, 0, cw, ch); //tło
     ball.move();
-    ball.onHit();
+    ball.onHit(paddle);
     paddle.draw();
     ball.draw();
 

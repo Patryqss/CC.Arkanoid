@@ -1,6 +1,5 @@
 import { ctx, cw, ch, canvas } from './main';
 import { timingSafeEqual } from 'crypto';
-import { xPaddle, lPaddle } from './main';
 
 class Ball {
     constructor(x, height) {
@@ -44,8 +43,8 @@ class Ball {
     }
 
     // funcja sprawdza czy piłka uderzy w paletkę
-    onPaddle(x) {
-        if ((x <= xPaddle + lPaddle) && (x >= xPaddle)) {
+    onPaddle(paddle, x) {
+        if ((x <= paddle.x + paddle.length) && (x >= paddle.x)) {
             console.log('trafienie');
             return true;
         }
@@ -53,11 +52,11 @@ class Ball {
         return false;
     }
 
-    onHit() {
+    onHit(paddle) {
         //Check if hit sth
         // Odbicie od ściany górnej i dolnej
         if ((this.y > this.yBottom) || this.y < this.size) {
-            this.onPaddle(this.x);
+            this.onPaddle(paddle, this.x);
             this.ySpeed = -this.ySpeed;
         }
         // Odbicie od ścian bocznych
