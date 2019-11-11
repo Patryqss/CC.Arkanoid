@@ -12,25 +12,26 @@ const ball = new Ball(paddle.x + paddle.length / 2, paddle.height);
 const bricks = new Bricks(8, 7, 80, 30);
 
 const gameLoop = () => {
-  ctx.fillStyle = 'black';
-  ctx.fillRect(0, 0, cw, ch); //tło
-  ball.move();
-  ball.onHit(paddle);
-  paddle.draw();
-  ball.draw();
-  bricks.drawBricks();
+    ctx.fillStyle = 'black';
+    ctx.fillRect(0, 0, cw, ch); //tło
+    ball.move();
+    ball.onHit(paddle);
+    bricks.hitBrick(ball);
+    paddle.draw();
+    ball.draw();
+    bricks.drawBricks();
 
-  requestAnimationFrame(gameLoop); // ta linijka musi być zawsze na końcu funkcji
+    requestAnimationFrame(gameLoop); // ta linijka musi być zawsze na końcu funkcji
 };
 
 document.addEventListener('click', e => {
-  console.log(e);
-  ball.startBall();
-  ball.move();
+    console.log(e);
+    ball.startBall();
+    ball.move();
 });
 
 document.addEventListener('keydown', e => {
-  paddle.movePaddle(e);
+    paddle.movePaddle(e);
 });
 
 requestAnimationFrame(gameLoop);
