@@ -6,6 +6,7 @@ class Paddle {
     this.height = 30;
     this.x = x - this.length / 2;
     this.spaceFromBorder = 10;
+    this.xSpeed = 5;
   }
   draw() {
     ctx.fillStyle = '#CA540D';
@@ -20,7 +21,7 @@ class Paddle {
         break;
       }
       case 39: {
-        if (this.x < cw - 100) {
+        if (this.x < cw - this.length){
           this.x += this.xSpeed;
         }
         break;
