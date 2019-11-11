@@ -11,14 +11,14 @@ const paddle = new Paddle(cw / 2);
 const ball = new Ball(paddle.x + paddle.length / 2, paddle.height);
 const bricks = new Bricks(8, 7, 80, 30);
 
-let hitInBrick = false;
-
 const gameLoop = () => {
     ctx.fillStyle = 'black';
     ctx.fillRect(0, 0, cw, ch); //tło
     ball.move();
-    hitInBrick = bricks.hitBrick(ball);
+
+    let hitInBrick = bricks.hitBrick(ball);
     ball.onHit(paddle, hitInBrick);
+
     paddle.draw();
     ball.draw();
     bricks.drawBricks();
