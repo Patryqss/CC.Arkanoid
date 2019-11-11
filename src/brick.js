@@ -48,8 +48,8 @@ class Bricks {
     }
 
     hitBrick(ball) {
-        for (let i = 0; i < this.numbOfRows; i++) {
-            for (let j = 0; j < this.bricksInRow; j++) {
+        for (let i = this.numbOfRows-1; 0 <= i; i--) {
+            for (let j = this.bricksInRow-1; 0 <= j; j--) {
                 if (ball.x < this.bricks[i][j].x + this.bricks[i][j].width && ball.x > this.bricks[i][j].x &&
                     ball.y < this.bricks[i][j].y + this.bricks[i][j].height && ball.y > this.bricks[i][j].y &&
                     this.bricks[i][j].isOn) {
