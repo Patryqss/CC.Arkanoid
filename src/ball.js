@@ -27,7 +27,7 @@ class Ball {
     startBall() {
         // Jeśli gra się nie zaczeła, startuje piłkę
         if (!this.isGameStart) {
-            const vSpeed = 8; // Prędkość piłki
+            const vSpeed = 3; // Prędkość piłki
             // losowe wartości początkowe dla x
             let randomSpeed = Math.floor(Math.random() * (vSpeed - 1) * 2 - (vSpeed - 1));
             if (randomSpeed === 0) {
@@ -55,22 +55,29 @@ class Ball {
 
     onHit(paddle, hitInBrick) {
         //Check if hit sth
-        // Odbicie od ściany górnej i dolnej
-    if (this.y < this.size - this.size) {
-      this.ySpeed = -this.ySpeed;
-    }
+        // Odbicie od ściany górnej
+        if (this.y < this.size - this.size) {
+            this.ySpeed = -this.ySpeed;
+        }
 
         if (hitInBrick) {
             this.ySpeed = -this.ySpeed;
         }
 
-    if (this.y > this.yBottom - this.size) {
-      if (this.onPaddle(paddle, this.x)) {
-        this.ySpeed = -this.ySpeed;
-      } else if (this.y > ch - this.size) {
-        alert("GAME OVER!");
-        document.location.reload();
-      }
+        // odbicie od paletki
+        if (this.y > this.yBottom) {
+            if (this.onPaddle(paddle, this.x)) {
+                this.ySpeed = -this.ySpeed;
+            } else if (this.y > ch - this.size) {
+                alert("GAME OVER!");
+                document.location.reload();
+            }
+        }
+
+        // Odbicie od ścian bocznych
+        if (this.x > cw - this.size || this.x < this.size) {
+            this.xSpeed = -this.xSpeed;
+        }
     }
 }
 export default Ball;
