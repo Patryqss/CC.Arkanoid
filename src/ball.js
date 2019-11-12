@@ -56,15 +56,16 @@ class Ball {
   onHit(paddle) {
     //Check if hit sth
     // Odbicie od ściany górnej i dolnej
-    if (this.y < this.size) {
+    if (this.y < this.size - this.size) {
       this.ySpeed = -this.ySpeed;
     }
 
-    if (this.y > this.yBottom) {
+    if (this.y > this.yBottom - this.size) {
       if (this.onPaddle(paddle, this.x)) {
         this.ySpeed = -this.ySpeed;
-      } else if (this.y > ch) {
-        this.ySpeed = -this.ySpeed;
+      } else if (this.y > ch - this.size) {
+        alert("GAME OVER!");
+        document.location.reload();
       }
     }
     // Odbicie od ścian bocznych

@@ -6,7 +6,7 @@ class Paddle {
     this.height = 30;
     this.x = x - this.length / 2;
     this.spaceFromBorder = 10;
-    this.xSpeed = 5;
+    this.xSpeed = 8;
   }
   draw() {
     ctx.fillStyle = '#CA540D';
