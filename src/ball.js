@@ -1,5 +1,4 @@
-import { ctx, cw, ch, canvas } from './main';
-import { timingSafeEqual } from 'crypto';
+import { ctx, cw, ch } from './main';
 
 function generatePointsOnTheCircle(radius, x, y, numbOfPoints){
   const circlePoints = [];
@@ -13,7 +12,6 @@ function generatePointsOnTheCircle(radius, x, y, numbOfPoints){
     y: Math.round(y - radius * Math.sin((i+1) * (Math.PI / (numbOfPoints/2)))) };
     circlePoints.push(point);
   }
-  console.log(circlePoints);
   return circlePoints;
 }
 class Ball {
@@ -25,14 +23,12 @@ class Ball {
         this.y = ch - height - this.size;
         this.yBottom = this.y;
         this.isGameStart = false;
-        
         this.circlePoints = generatePointsOnTheCircle(this.size, this.x, this.y, 12);
     }
 
     move() {
         this.x += this.xSpeed;
         this.y += this.ySpeed;
-        
         for(let i = 0; i < this.circlePoints.length; i++){
           this.circlePoints[i].x += this.xSpeed;
           this.circlePoints[i].y += this.ySpeed;
