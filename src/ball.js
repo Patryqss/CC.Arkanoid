@@ -10,6 +10,7 @@ class Ball {
         this.y = ch - height - this.size;
         this.yBottom = this.y;
         this.isGameStart = false;
+        this.score = 0;
     }
 
     move() {
@@ -53,6 +54,8 @@ class Ball {
         return false;
     }
 
+    
+    //lives = 3;
     onHit(paddle, hitInBrick) {
         //Check if hit sth
         // Odbicie od ściany górnej
@@ -62,6 +65,14 @@ class Ball {
 
         if (hitInBrick) {
             this.ySpeed = -this.ySpeed;
+            this.score++
+            document.querySelector(".score").innerText = "Score: " + this.score + ", Lives left:";
+        }
+
+        //Winning
+        if (this.score == 56) {
+            alert("You won, congratulations!");
+            document.location.reload();
         }
 
         // odbicie od paletki
@@ -71,6 +82,14 @@ class Ball {
             } else if (this.y > ch - this.size) {
                 alert("GAME OVER!");
                 document.location.reload();
+              /* lives--;
+                if (lives == 0) {
+                alert("GAME OVER!");
+                document.location.reload();
+                } else {
+                    this.x = paddle.x + paddle.length / 2;
+                    this.y = paddle.height;
+                } */
             }
         }
 
@@ -79,5 +98,9 @@ class Ball {
             this.xSpeed = -this.xSpeed;
         }
     }
+
+   /* drawScore () {
+        document.querySelector(".score").innerText = "Score: " + score + ", Lives left:";
+    } */
 }
 export default Ball;

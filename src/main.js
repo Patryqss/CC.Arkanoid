@@ -24,6 +24,7 @@ const gameLoop = () => {
     ball.draw();
     bricks.drawBricks();
 
+
     requestAnimationFrame(gameLoop); // ta linijka musi być zawsze na końcu funkcji
 };
 
@@ -32,15 +33,12 @@ document.addEventListener('click', e => {
   gameStart = true;
   ball.startBall();
   ball.move();
-  //preventing the paddle to move before click
-  if (!click){
-    gameStart= false;
-  } else 
-  {gameStart = true;};
 });
 
 document.addEventListener('keydown', e => {
-    paddle.movePaddle(e);
+    if (gameStart) {
+      paddle.movePaddle(e);
+    }
 });
 
 requestAnimationFrame(gameLoop);
