@@ -10,6 +10,7 @@ export const ch = canvas.height;
 const paddle = new Paddle(cw / 2);
 const ball = new Ball(paddle.x + paddle.length / 2, paddle.height);
 const bricks = new Bricks(8, 7, 80, 30);
+let gameStart = false;
 
 const gameLoop = () => {
     ctx.fillStyle = 'black';
@@ -27,9 +28,15 @@ const gameLoop = () => {
 };
 
 document.addEventListener('click', e => {
-    console.log(e);
-    ball.startBall();
-    ball.move();
+  console.log(e);
+  gameStart = true;
+  ball.startBall();
+  ball.move();
+  //preventing the paddle to move before click
+  if (!click){
+    gameStart= false;
+  } else 
+  {gameStart = true;};
 });
 
 document.addEventListener('keydown', e => {
