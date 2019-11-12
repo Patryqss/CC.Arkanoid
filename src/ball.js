@@ -1,6 +1,21 @@
 import { ctx, cw, ch, canvas } from './main';
 import { timingSafeEqual } from 'crypto';
 
+function generatePointsOnTheCircle(radius, x, y, numbOfPoints){
+  const circlePoints = [];
+  for (let i = 0; i < numbOfPoints/2; i++){
+    let point = { x: Math.round(x + radius * Math.cos((i+1) * (Math.PI / (numbOfPoints/2)))),
+    y: Math.round(y + radius * Math.sin((i+1) * (Math.PI / (numbOfPoints/2)))) };
+    circlePoints.push(point);
+  }
+  for (let i = 0; i < numbOfPoints/2; i++){
+    let point = { x: Math.round(x + radius * Math.cos((i+1) * (Math.PI / (numbOfPoints/2)))),
+    y: Math.round(y - radius * Math.sin((i+1) * (Math.PI / (numbOfPoints/2)))) };
+    circlePoints.push(point);
+  }
+  console.log(circlePoints);
+  return circlePoints;
+}
 class Ball {
     constructor(x, height) {
         this.size = 10;
@@ -10,11 +25,18 @@ class Ball {
         this.y = ch - height - this.size;
         this.yBottom = this.y;
         this.isGameStart = false;
+        
+        this.circlePoints = generatePointsOnTheCircle(this.size, this.x, this.y, 12);
     }
 
     move() {
         this.x += this.xSpeed;
         this.y += this.ySpeed;
+        
+        for(let i = 0; i < this.circlePoints.length; i++){
+          this.circlePoints[i].x += this.xSpeed;
+          this.circlePoints[i].y += this.ySpeed;
+        }
     }
     draw() {
         ctx.fillStyle = '#E1E634';
