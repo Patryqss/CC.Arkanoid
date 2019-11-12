@@ -1,5 +1,5 @@
-import { ctx, cw, ch, canvas } from './main';
-import { timingSafeEqual } from 'crypto';
+import { ctx, cw, ch } from './main';
+
 
 class Ball {
     constructor(x, height) {
@@ -54,7 +54,7 @@ class Ball {
         return false;
     }
 
-    
+
     //lives = 3;
     onHit(paddle, hitInBrick) {
         //Check if hit sth
@@ -66,7 +66,7 @@ class Ball {
         if (hitInBrick) {
             this.ySpeed = -this.ySpeed;
             this.score++
-            document.querySelector(".score").innerText = "Score: " + this.score + ", Lives left:";
+                document.querySelector(".score").innerText = "Score: " + this.score + ", Lives left:";
         }
 
         //Winning
@@ -82,14 +82,14 @@ class Ball {
             } else if (this.y > ch - this.size) {
                 alert("GAME OVER!");
                 document.location.reload();
-              /* lives--;
-                if (lives == 0) {
-                alert("GAME OVER!");
-                document.location.reload();
-                } else {
-                    this.x = paddle.x + paddle.length / 2;
-                    this.y = paddle.height;
-                } */
+                /* lives--;
+                  if (lives == 0) {
+                  alert("GAME OVER!");
+                  document.location.reload();
+                  } else {
+                      this.x = paddle.x + paddle.length / 2;
+                      this.y = paddle.height;
+                  } */
             }
         }
 
@@ -99,8 +99,8 @@ class Ball {
         }
     }
 
-   /* drawScore () {
-        document.querySelector(".score").innerText = "Score: " + score + ", Lives left:";
-    } */
+    /* drawScore () {
+         document.querySelector(".score").innerText = "Score: " + score + ", Lives left:";
+     } */
 }
 export default Ball;

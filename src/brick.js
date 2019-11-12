@@ -1,4 +1,4 @@
-import { ctx, cw, ch } from './main';
+import { ctx } from './main';
 
 const gapX = 5;
 const gapY = 5;
