@@ -27,6 +27,5 @@ class Paddle {
         break;
       }
     }
-  }
 }
 export default Paddle;
