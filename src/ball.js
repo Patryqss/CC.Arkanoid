@@ -24,12 +24,14 @@ class Ball {
         this.size = 10;
         this.xSpeed = 0;
         this.ySpeed = 0;
+        this.ballSpeed = 6; // Prędkość piłki
         this.x = x;
         this.y = ch - height - this.size;
         this.yBottom = this.y;
         this.isGameStart = false;
         this.score = 0;
         this.circlePoints = generatePointsOnTheCircle(this.size, this.x, this.y, 12);
+        this.powerUpBarrier = false;
     }
 
     move() {
@@ -40,27 +42,36 @@ class Ball {
             this.circlePoints[i].y += this.ySpeed;
         }
     }
-    draw() {
+    draw(paddle) {
+        // piłka porusza się razem z paletką
+        if (!this.isGameStart) {
+            this.x = paddle.x + paddle.length / 2;
+        }
         ctx.fillStyle = '#E1E634';
         ctx.beginPath();
         ctx.arc(this.x, this.y, this.size, 0, 2 * Math.PI);
         ctx.fill();
     }
 
+    calcYSpeed(v) {
+        this.ballSpeed = v; // zmiana prędkości
+        // dobranie y tak aby w zależności od x prędkość wynosiła this.ballSpeed.  y^2 = v^2 - x^2
+        this.ySpeed = -Math.abs(Math.sqrt(Math.pow(-this.ballSpeed, 2) - Math.pow(this.xSpeed, 2)));
+    }
+
     // wystartowanie piłką
     startBall() {
         // Jeśli gra się nie zaczeła, startuje piłkę
         if (!this.isGameStart) {
-            const vSpeed = 6; // Prędkość piłki
             // losowe wartości początkowe dla x
-            let randomSpeed = Math.floor(Math.random() * (vSpeed - 1) * 2 - (vSpeed - 1));
+            let randomSpeed = Math.floor(Math.random() * (this.ballSpeed - 1) * 2 - (this.ballSpeed - 1));
             if (randomSpeed === 0) {
                 // zapobiega pionowego startu
                 randomSpeed += 1;
             }
             this.xSpeed = randomSpeed;
-            // dobranie y tak aby w zależności od x prędkość wynosiła vSpeed.  y^2 = v^2 - x^2
-            this.ySpeed = -Math.abs(Math.sqrt(Math.pow(-vSpeed, 2) - Math.pow(this.xSpeed, 2)));
+            // dobranie y tak aby w zależności od x prędkość wynosiła this.ballSpeed.  y^2 = v^2 - x^2
+            this.ySpeed = -Math.abs(Math.sqrt(Math.pow(-this.ballSpeed, 2) - Math.pow(this.xSpeed, 2)));
             console.log('speed x- ' + this.xSpeed + ' speed y - ' + this.ySpeed);
 
             this.isGameStart = true;
@@ -106,9 +117,12 @@ class Ball {
                     this.xSpeed = -this.xSpeed;
                 }
             } else if (this.y > ch) {
-                // this.ySpeed = -this.ySpeed;
-                alert("GAME OVER!");
-                document.location.reload();
+                // if (this.powerUpBarrier) {
+                //     this.ySpeed = -this.ySpeed
+                // }
+                this.ySpeed = -this.ySpeed;
+                // alert("GAME OVER!");
+                // document.location.reload();
                 /* lives--;
                   if (lives == 0) {
                   alert("GAME OVER!");
