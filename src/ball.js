@@ -28,6 +28,7 @@ class Ball {
         this.y = ch - height - this.size;
         this.yBottom = this.y;
         this.isGameStart = false;
+        this.score = 0;
         this.circlePoints = generatePointsOnTheCircle(this.size, this.x, this.y, 12);
     }
 
@@ -67,8 +68,8 @@ class Ball {
     }
 
     // funcja sprawdza czy piłka uderzy w paletkę
-    onPaddle(paddle, x) {
-        if (x <= paddle.x + paddle.length && x >= paddle.x) {
+    onPaddle(paddle) {
+        if (this.x <= paddle.x + paddle.length && this.x >= paddle.x && this.ySpeed > 0) {
             console.log('trafienie');
             return true;
         }
@@ -76,20 +77,46 @@ class Ball {
         return false;
     }
 
+    //lives = 3;
     onHit(paddle, hitInBrick) {
         //Check if hit sth
 
         // Odbicie od ściany górnej
-        if (this.y < this.size || hitInBrick === 1) {
+        if (this.y < this.size - this.size || hitInBrick === 1) {
             this.ySpeed = -this.ySpeed;
         }
 
+        if (hitInBrick !== 0) {
+            this.score++
+                document.querySelector(".score").innerText = "Score: " + this.score + ", Lives left:";
+        }
+
+        //Winning
+        if (this.score == 56) {
+            alert("You won, congratulations!");
+            document.location.reload();
+        }
+
         // sprawdza czy piłka odbiłą się od paletki
-        if (this.y > this.yBottom) {
-            if (this.onPaddle(paddle, this.x)) {
+        if (this.y >= this.yBottom) {
+            if (this.onPaddle(paddle)) {
                 this.ySpeed = -this.ySpeed;
+                // odbicie od boku paletki
+                if (this.y > ch - paddle.height) {
+                    this.xSpeed = -this.xSpeed;
+                }
             } else if (this.y > ch) {
-                this.ySpeed = -this.ySpeed;
+                // this.ySpeed = -this.ySpeed;
+                alert("GAME OVER!");
+                document.location.reload();
+                /* lives--;
+                  if (lives == 0) {
+                  alert("GAME OVER!");
+                  document.location.reload();
+                  } else {
+                      this.x = paddle.x + paddle.length / 2;
+                      this.y = paddle.height;
+                  } */
             }
         }
         // Odbicie od ścian bocznych
@@ -97,5 +124,9 @@ class Ball {
             this.xSpeed = -this.xSpeed;
         }
     }
+
+    /* drawScore () {
+         document.querySelector(".score").innerText = "Score: " + score + ", Lives left:";
+     } */
 }
 export default Ball;

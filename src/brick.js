@@ -47,7 +47,7 @@ class Bricks {
         }
     }
 
-    hitBrick(ball) {
+    hitBrick(ball, powerUp) {
         for (let i = this.numbOfRows - 1; 0 <= i; i--) {
             for (let j = this.bricksInRow - 1; 0 <= j; j--) {
                 for (let cIt = 0; cIt < ball.circlePoints.length; cIt++) {
@@ -57,6 +57,7 @@ class Bricks {
                         ball.circlePoints[cIt].y >= this.bricks[i][j].y && this.bricks[i][j].isOn) {
 
                         this.bricks[i][j].isOn = false; // zmiana widoczności bloczka
+                        powerUp.createPowerUp(this.bricks[i][j]); // Uruchamia Power Up
 
                         if (ball.circlePoints[cIt].x < this.bricks[i][j].x + this.bricks[i][j].width &&
                             ball.circlePoints[cIt].x > this.bricks[i][j].x) {
