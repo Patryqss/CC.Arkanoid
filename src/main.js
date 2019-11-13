@@ -1,6 +1,7 @@
 import Paddle from './paddle';
 import Ball from './ball';
 import Bricks from './brick';
+import PowerUp from './powerUp';
 
 export const canvas = document.querySelector('canvas');
 export const ctx = canvas.getContext('2d');
@@ -10,16 +11,23 @@ export const ch = canvas.height;
 const paddle = new Paddle(cw / 2);
 const ball = new Ball(paddle.x + paddle.length / 2, paddle.height);
 const bricks = new Bricks(8, 7, 80, 30);
+const powerUp = new PowerUp(paddle.x + paddle.length / 2, );
 
 const gameLoop = () => {
     ctx.fillStyle = 'black';
     ctx.fillRect(0, 0, cw, ch); //tło
     ball.move();
+    powerUp.move();
 
     // hitInBrick - przechowuje informacje czy oraz z której stronypiłka uderzyła w bloczek
-    let hitInBrick = bricks.hitBrick(ball);
+    let hitInBrick = bricks.hitBrick(ball, powerUp);
     ball.onHit(paddle, hitInBrick);
+    if (powerUp.onHit(paddle)) {
+        ball.size = 20;
+        // ball.draw();
+    }
 
+    powerUp.PowerUpDraw();
     paddle.draw();
     ball.draw();
     bricks.drawBricks();
