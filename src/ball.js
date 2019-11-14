@@ -31,7 +31,6 @@ class Ball {
         this.isGameStart = false;
         this.score = 0;
         this.circlePoints = generatePointsOnTheCircle(this.size, this.x, this.y, 12);
-        this.powerUpBarrier = false;
     }
 
     move() {
@@ -54,9 +53,19 @@ class Ball {
     }
 
     calcYSpeed(v) {
+        // if (v <= Math.abs(this.xSpeed)) {
+        //     this.xSpeed--;
+        // }
         this.ballSpeed = v; // zmiana prędkości
+
+
         // dobranie y tak aby w zależności od x prędkość wynosiła this.ballSpeed.  y^2 = v^2 - x^2
-        this.ySpeed = -Math.abs(Math.sqrt(Math.pow(-this.ballSpeed, 2) - Math.pow(this.xSpeed, 2)));
+        if (this.ySpeed > 0) {
+            this.ySpeed = Math.abs(Math.sqrt(Math.pow(-this.ballSpeed, 2) - Math.pow(this.xSpeed, 2)));
+        } else {
+            this.ySpeed = -Math.abs(Math.sqrt(Math.pow(-this.ballSpeed, 2) - Math.pow(this.xSpeed, 2)));
+        }
+
     }
 
     // wystartowanie piłką
@@ -89,7 +98,7 @@ class Ball {
     }
 
     //lives = 3;
-    onHit(paddle, hitInBrick) {
+    onHit(paddle, hitInBrick, powerUp) {
         //Check if hit sth
 
         // Odbicie od ściany górnej
@@ -108,8 +117,12 @@ class Ball {
             document.location.reload();
         }
 
+        // jeśli bariera jest aktywna, piłka się od niej odbija
+        if (powerUp.barrierIsOn && this.y > this.yBottom - powerUp.yBarrier) {
+            this.ySpeed = -this.ySpeed;
+        }
         // sprawdza czy piłka odbiłą się od paletki
-        if (this.y >= this.yBottom) {
+        else if (this.y >= this.yBottom) {
             if (this.onPaddle(paddle)) {
                 this.ySpeed = -this.ySpeed;
                 // odbicie od boku paletki
@@ -117,9 +130,6 @@ class Ball {
                     this.xSpeed = -this.xSpeed;
                 }
             } else if (this.y > ch) {
-                // if (this.powerUpBarrier) {
-                //     this.ySpeed = -this.ySpeed
-                // }
                 this.ySpeed = -this.ySpeed;
                 // alert("GAME OVER!");
                 // document.location.reload();
