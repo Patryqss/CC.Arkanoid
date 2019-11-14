@@ -7,13 +7,15 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge" />
     <link rel="stylesheet" href="style.css" />
     <title>Arkanoid</title>
-    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
-</head>
+    <link href="https://fonts.googleapis.com/css?family=Anton&display=swap" rel="stylesheet">
+    <script src="https://kit.fontawesome.com/8f00d1401f.js" crossorigin="anonymous"></script>
+  </head>
 
 <body>
     <div id="wrapper">
-        <div class="score"></div>
-        <canvas width="600" height="600"></canvas>
+      <canvas width="600" height="600"></canvas>
+      <div class="score-icon"><i class="fas fa-star"></i> Score: <span class="score"></span></div>
+      <div class="lives-icon"><i class="fas fa-heartbeat"></i> Lives: <span class="lives"></span></div>
     </div>
 
     <script defer src="index.js"></script>
