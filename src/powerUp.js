@@ -1,42 +1,58 @@
 import { ctx, cw, ch } from './main';
 
 class PowerUp {
-    constructor(x) {
-        this.x = x;
+    constructor() {
+        this.x;
         this.y;
 
         this.width = 50
         this.height = 20;
         this.yBottom = ch - this.height;
         this.ySpeed = 0;
-        this.yBarrier;
+        this.yBarrier = 10;
         this.barrierIsOn = false;
         this.counter = 0;
+        this.coutnerLimit = 400;
+        this.isFalling = false;
+        this.numOfBall = 3;
     }
 
     move() {
         this.y += this.ySpeed;
     }
 
-    PowerUpDraw() {
-        ctx.fillStyle = 'orange';
-        ctx.fillRect(this.x, this.y, this.width, this.height);
-        if (this.barrierIsOn) {
-            ctx.fillStyle = '#0A513D';
-            ctx.fillRect(0, ch - this.yBarrier, cw, 10);
-            this.counter++;
-            if (this.counter >= 500) {
-                this.counter = 0;
-                this.barrierIsOn = false;
+    draw(paddleHeight) {
+        // warunek powoduje, że jedoncześnie wyświetla się tylko jeden powerUp
+        if (this.isFalling) {
+            ctx.fillStyle = 'orange';
+            ctx.fillRect(this.x, this.y, this.width, this.height);
+            if (this.y >= ch) {
+                this.isFalling = false;
             }
         }
+
+        // rysowanie bariery
+        if (this.barrierIsOn) {
+            ctx.fillStyle = '#0A513D';
+            ctx.fillRect(0, ch - this.yBarrier - paddleHeight, cw, this.yBarrier);
+            if (this.counter >= this.coutnerLimit) {
+                this.barrierIsOn = false;
+                this.counter = 0;
+            }
+        }
+
+        // pseudo odmieranie czasu trwania efektu
+        this.counter++;
     }
 
     // tworzy powerUp w miejscu zniszczenia cegły
     createPowerUp(brick) {
-        this.x = brick.x;
-        this.y = brick.y;
-        this.ySpeed = 3;
+        if (!this.isFalling) { // jeśli żaden powerUp nie spada, aktywuje powerUp
+            this.x = brick.x;
+            this.y = brick.y;
+            this.ySpeed = 3;
+            this.isFalling = true;
+        }
     }
 
 
@@ -51,6 +67,7 @@ class PowerUp {
         if (this.y > this.yBottom) {
             if (this.onPaddle(paddle, this.x)) {
                 console.log("powerUp")
+                this.isFalling = false;
                 return true;
             }
         }
@@ -59,7 +76,11 @@ class PowerUp {
 
     // funkcja uruchamiająca powerUP
     runPowerUp(paddle, ball) {
-        let num = 2;
+        let num;
+        if (this.isFalling) {
+            num = Math.floor(Math.random() * 8 + 1);
+        }
+
         if (this.onHit(paddle)) { // czy power up upadł na paletkę
             switch (num) {
                 case 1: // powiększenie piłki
@@ -68,17 +89,27 @@ class PowerUp {
                 case 2: // powięszenie paletki
                     paddle.length = 150;
                     break;
-                case 3: // zmiana prędkości piłki
-                    ball.calcYSpeed(6);
+                case 3: // zmniejszenie paletki
+                    paddle.length = 50;
                     break;
-                case 4: // stworzenie bariery na x sekund ____ JESCZE DOPRACOWAĆ
-                    this.yBarrier = 5;
-                    this.barrierIsOn = true;
-                    ball.powerUpBarrier = this.barrierIsOn ? true : false;
+                case 4: // zwiększenie prędkości piłki
+                    ball.calcYSpeed(8);
                     break;
-                case 5: // zmiana prędkości paletki
+                    // case 5: // zmniejszenie prędkości piłki
+                    //     ball.calcYSpeed(3);
+                    //     break;
+                case 6: // zmniejszenie prędkości paletki
                     paddle.xSpeed = 4;
                     break;
+                case 7: // zwiększenie prędkości paletki
+                    paddle.xSpeed = 16;
+                    break;
+                case 8: // stworzenie bariery na x sekund
+                    this.barrierIsOn = true;
+                    ball.powerUpBarrier = true;
+                    this.counter = 0; // reset licznika czasu trwania efektu
+                    break;
+
                 default:
                     break;
             }

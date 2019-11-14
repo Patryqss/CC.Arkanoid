@@ -24,7 +24,7 @@ const gameLoop = () => {
     ball.onHit(paddle, hitInBrick, powerUp);
     powerUp.runPowerUp(paddle, ball);
 
-    powerUp.PowerUpDraw();
+    powerUp.draw(paddle.height);
     paddle.draw();
     ball.draw(paddle);
     bricks.drawBricks();
