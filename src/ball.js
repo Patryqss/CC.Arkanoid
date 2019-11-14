@@ -104,8 +104,6 @@ class Ball {
         // Odbicie od ściany górnej
         if (this.y < this.size - this.size || hitInBrick === 1) {
             this.ySpeed = -this.ySpeed;
-            this.score++
-                document.querySelector(".score").innerText = "Score: " + this.score + ", Lives left:";
         }
 
         if (hitInBrick !== 0) {
