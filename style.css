@@ -6,12 +6,12 @@ body {
     height: 100vh;
 
 }
-  
+
 canvas {
     border: black solid 5px;
 }
 
-.score{
+.score {
     background-color: #a9a9a9;
     width: 600px;
     height: 30px;

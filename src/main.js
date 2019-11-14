@@ -19,16 +19,14 @@ const gameLoop = () => {
     ball.move();
     powerUp.move();
 
+    // hitInBrick - przechowuje informacje czy oraz z której stronypiłka uderzyła w bloczek
     let hitInBrick = bricks.hitBrick(ball, powerUp);
-    ball.onHit(paddle, hitInBrick);
-    if (powerUp.onHit(paddle)) {
-        ball.size = 20;
-        ball.draw();
-    }
+    ball.onHit(paddle, hitInBrick, powerUp);
+    powerUp.runPowerUp(paddle, ball);
 
-    powerUp.PowerUpDraw();
+    powerUp.draw(paddle.height);
     paddle.draw();
-    ball.draw();
+    ball.draw(paddle);
     bricks.drawBricks();
 
     requestAnimationFrame(gameLoop); // ta linijka musi być zawsze na końcu funkcji

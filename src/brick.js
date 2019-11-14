@@ -50,16 +50,27 @@ class Bricks {
     hitBrick(ball, powerUp) {
         for (let i = this.numbOfRows - 1; 0 <= i; i--) {
             for (let j = this.bricksInRow - 1; 0 <= j; j--) {
-                if (ball.x < this.bricks[i][j].x + this.bricks[i][j].width && ball.x > this.bricks[i][j].x &&
-                    ball.y < this.bricks[i][j].y + this.bricks[i][j].height && ball.y > this.bricks[i][j].y &&
-                    this.bricks[i][j].isOn) {
-                    this.bricks[i][j].isOn = false;
-                    powerUp.createPowerUp(this.bricks[i][j]);
-                    return true;
+                for (let cIt = 0; cIt < ball.circlePoints.length; cIt++) {
+                    if (ball.circlePoints[cIt].x <= this.bricks[i][j].x + this.bricks[i][j].width &&
+                        ball.circlePoints[cIt].x >= this.bricks[i][j].x &&
+                        ball.circlePoints[cIt].y <= this.bricks[i][j].y + this.bricks[i][j].height &&
+                        ball.circlePoints[cIt].y >= this.bricks[i][j].y && this.bricks[i][j].isOn) {
+
+                        this.bricks[i][j].isOn = false; // zmiana widoczności bloczka
+                        powerUp.createPowerUp(this.bricks[i][j]); // Uruchamia Power Up
+
+                        if (ball.circlePoints[cIt].x < this.bricks[i][j].x + this.bricks[i][j].width &&
+                            ball.circlePoints[cIt].x > this.bricks[i][j].x) {
+                            return 1; // zwraca 1 jeśli piłka odbiła się od ściany górnej lub dolnej
+                        } else if (ball.circlePoints[cIt].y <= this.bricks[i][j].y + this.bricks[i][j].height &&
+                            ball.circlePoints[cIt].y >= this.bricks[i][j].y) {
+                            return 2; // zwraca 2 jeśli piłka odbiła się od bocznych ścian 
+                        }
+                    }
                 }
             }
         }
-        return false;
+        return 0; // zwraca 0 jeśli nie ma zderzenia
     }
 }
 
