@@ -29,7 +29,9 @@ class Ball {
         this.y = ch - height - this.size;
         this.yBottom = this.y;
         this.isGameStart = false;
+        this.gameOver = false;
         this.score = 0;
+        this.lives = localStorage.getItem("lives");
         this.circlePoints = generatePointsOnTheCircle(this.size, this.x, this.y, 12);
     }
 
@@ -97,7 +99,6 @@ class Ball {
         return false;
     }
 
-    //lives = 3;
     onHit(paddle, hitInBrick, powerUp) {
         //Check if hit sth
 
@@ -105,12 +106,7 @@ class Ball {
         if (this.y < this.size - this.size || hitInBrick === 1) {
             this.ySpeed = -this.ySpeed;
             this.score++
-                document.querySelector(".score").innerText = "Score: " + this.score + ", Lives left:";
-        }
-
-        if (hitInBrick !== 0) {
-            this.score++
-                document.querySelector(".score").innerText = "Score: " + this.score + ", Lives left:";
+                document.querySelector(".score").innerText = this.score;
         }
 
         //Winning
@@ -132,17 +128,15 @@ class Ball {
                     this.xSpeed = -this.xSpeed;
                 }
             } else if (this.y > ch) {
-                // this.ySpeed = -this.ySpeed;
-                alert("GAME OVER!");
-                document.location.reload();
-                /* lives--;
-                  if (lives == 0) {
-                  alert("GAME OVER!");
-                  document.location.reload();
-                  } else {
-                      this.x = paddle.x + paddle.length / 2;
-                      this.y = paddle.height;
-                  } */
+
+                if (this.y > this.yBottom) {
+                    if (this.onPaddle(paddle, this.x)) {
+                        this.ySpeed = -this.ySpeed;
+                    } else if (this.y > ch - this.size) {
+                        alert("GAME OVER!");
+                        document.location.reload();
+                    }
+                }
             }
         }
 
