@@ -39,7 +39,7 @@ res.src = 'https://cdn.wikimg.net/en/strategywiki/images/f/f8/Arkanoid_2_capsule
 let powerUpImg = [lBall, sBall, lPaddle, sPaddle, accBall, accPaddle, slPaddle, bar, res];
 
 class PowerUp {
-    constructor() {
+    constructor(ball, paddle) {
         this.x;
         this.y;
 
@@ -55,6 +55,10 @@ class PowerUp {
         this.isCreate = false;
         this.color = 'rgba(0,0,0,0)';
         this.powerUpNumber = 0;
+        this.backUpBallSize = ball.size;
+        this.backUpPaddleSize = paddle.length;
+        this.backUpBallSpeed = ball.ballSpeed;
+        this.backUpPaddleSpeed = paddle.xSpeed;
     }
 
     move() {
@@ -152,13 +156,10 @@ class PowerUp {
                     // paddle.length = 100;
                     // ball.calcYSpeed(6);
                     // paddle.xSpeed = 8;
-                    ball.size = (largeBall.previousSize !== 0) ? largeBall.previousSize : ball.size;
-                    ball.size = (shrinkBall.previousSize !== 0) ? shrinkBall.previousSize : ball.size;
-                    paddle.length = (largePaddle.previousSize !== 0) ? largePaddle.previousSize : paddle.length;
-                    paddle.length = (shrinkPaddle.previousSize !== 0) ? shrinkPaddle.previousSize : paddle.length;
-                    ball.calcYSpeed((accelerateBall.previousSpeed !== 0) ? accelerateBall.previousSpeed : ball.ballSpeed);
-                    paddle.xSpeed = (acceleratePaddle.previousSpeed !== 0 ? acceleratePaddle.previousSpeed : paddle.xSpeed);
-                    paddle.xSpeed = (slowPaddle.previousSpeed !== 0 ? slowPaddle.previousSpeed : paddle.xSpeed);
+                    ball.size = this.backUpBallSize;
+                    paddle.length = this.backUpPaddleSize;
+                    ball.calcYSpeed(this.backUpBallSpeed);
+                    paddle.xSpeed = this.backUpPaddleSpeed;
                     break;
                 default:
                     break;

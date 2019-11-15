@@ -11,7 +11,7 @@ export const ch = canvas.height;
 const paddle = new Paddle(cw / 2);
 const ball = new Ball(paddle.x + paddle.length / 2, paddle.height);
 const bricks = new Bricks(8, 7, 80, 30);
-const powerUp = new PowerUp();
+const powerUp = new PowerUp(ball, paddle);
 
 var background = new Image();
 background.src = 'https://www.ctvnews.ca/polopoly_fs/1.4011871.1531487420!/httpImage/image.jpg_gen/derivatives/landscape_620/image.jpg';

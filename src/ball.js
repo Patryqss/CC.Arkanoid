@@ -133,10 +133,8 @@ class Ball {
             } else if (this.y > ch - this.size) {
                 this.lives--;
                 if (this.lives <= 0) {
-                    this.ySpeed = -this.ySpeed;
-
-                    // alert("GAME OVER!");
-                    // document.location.reload();
+                    alert("GAME OVER!");
+                    document.location.reload();
                 } else {
                     this.ySpeed = -this.ySpeed;
                     // alert("GAME OVER!");
