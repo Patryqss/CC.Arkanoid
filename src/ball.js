@@ -1,5 +1,8 @@
 import { ctx, cw, ch } from './main';
 
+var ball_img = new Image();
+ball_img.src = 'https://upload.wikimedia.org/wikipedia/commons/c/c4/Table_tennis_ball.png';
+
 function generatePointsOnTheCircle(radius, x, y, numbOfPoints) {
     const circlePoints = [];
     for (let i = 0; i < numbOfPoints / 2; i++) {
@@ -48,16 +51,14 @@ class Ball {
         if (!this.isGameStart) {
             this.x = paddle.x + paddle.length / 2;
         }
-        ctx.fillStyle = '#E1E634';
+        // ctx.fillStyle = '#E1E634';
         ctx.beginPath();
         ctx.arc(this.x, this.y, this.size, 0, 2 * Math.PI);
         ctx.fill();
+        ctx.drawImage(ball_img, this.x - this.size, this.y - this.size, this.size * 2, this.size * 2);
     }
 
     calcYSpeed(v) {
-        // if (v <= Math.abs(this.xSpeed)) {
-        //     this.xSpeed--;
-        // }
         this.ballSpeed = v; // zmiana prędkości
 
 

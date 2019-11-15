@@ -17,6 +17,27 @@ const acceleratePaddle = new AcceleratePaddle();
 const slowPaddle = new SlowPaddle();
 const barrier = new Barrier();
 
+var lBall = new Image();
+var sBall = new Image();
+var lPaddle = new Image();
+var sPaddle = new Image();
+var accBall = new Image();
+var slPaddle = new Image();
+var accPaddle = new Image();
+var bar = new Image();
+var res = new Image();
+
+lBall.src = 'https://cdn.wikimg.net/en/strategywiki/images/7/70/Arkanoid_2_capsule_Laser.gif';
+sBall.src = 'https://cdn.wikimg.net/en/strategywiki/images/b/be/Arkanoid_2_capsule_Enlarge.gif';
+lPaddle.src = 'https://cdn.wikimg.net/en/strategywiki/images/7/79/Arkanoid_2_capsule_Catch.gif';
+sPaddle.src = 'https://cdn.wikimg.net/en/strategywiki/images/f/fc/Arkanoid_2_capsule_Slow.gif';
+accBall.src = 'https://cdn.wikimg.net/en/strategywiki/images/a/a5/Arkanoid_2_capsule_Player.gif';
+accPaddle.src = 'https://cdn.wikimg.net/en/strategywiki/images/5/5f/Arkanoid_2_capsule_Disrupt.gif';
+slPaddle.src = 'https://cdn.wikimg.net/en/strategywiki/images/f/f1/Arkanoid_2_capsule_Two.gif';
+bar.src = 'https://cdn.wikimg.net/en/strategywiki/images/archive/3/3d/20120407132309%21Arkanoid_2_capsule_Break.gif';
+res.src = 'https://cdn.wikimg.net/en/strategywiki/images/f/f8/Arkanoid_2_capsule_Reduce.gif';
+let powerUpImg = [lBall, sBall, lPaddle, sPaddle, accBall, accPaddle, slPaddle, bar, res];
+
 class PowerUp {
     constructor() {
         this.x;
@@ -32,8 +53,8 @@ class PowerUp {
         this.coutnerLimit = 300;
         this.isFalling = false;
         this.isCreate = false;
-        this.color = 'orange';
-        this.powerUpNumber;
+        this.color = 'rgba(0,0,0,0)';
+        this.powerUpNumber = 0;
     }
 
     move() {
@@ -45,6 +66,7 @@ class PowerUp {
         if (this.isFalling) {
             ctx.fillStyle = this.color;
             ctx.fillRect(this.x, this.y, this.width, this.height);
+            ctx.drawImage(powerUpImg[this.powerUpNumber - 1], this.x, this.y, this.width, this.height);
             if (this.y >= ch) {
                 this.isFalling = false;
             }
@@ -52,7 +74,7 @@ class PowerUp {
 
         // rysowanie bariery
         if (this.barrierIsOn) {
-            ctx.fillStyle = '#0A513D';
+            ctx.fillStyle = '#ff33cc';
             ctx.fillRect(0, ch - this.yBarrier - paddleHeight, cw, this.yBarrier);
             if (this.counter >= this.coutnerLimit) {
                 this.barrierIsOn = false;
@@ -88,11 +110,9 @@ class PowerUp {
 
     // funkcja uruchamiająca powerUP
     runPowerUp(paddle, ball) {
-        // let num = 8;
-
         if (this.onHit(paddle) && this.isCreate) { // czy power up upadł na paletkę
             this.isCreate = false; // dzięki temu dany power up aktywuje się tylko raz
-            switch (9) {
+            switch (this.powerUpNumber) {
                 case 1: // powiększenie piłki
                     // ball.size *= 1.2;
                     largeBall.large(ball);

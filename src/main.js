@@ -13,11 +13,15 @@ const ball = new Ball(paddle.x + paddle.length / 2, paddle.height);
 const bricks = new Bricks(8, 7, 80, 30);
 const powerUp = new PowerUp();
 
+var background = new Image();
+background.src = 'https://www.ctvnews.ca/polopoly_fs/1.4011871.1531487420!/httpImage/image.jpg_gen/derivatives/landscape_620/image.jpg';
+
 const gameLoop = () => {
     ctx.fillStyle = 'black';
     ctx.fillRect(0, 0, cw, ch); //tło
     ball.move();
     powerUp.move();
+    ctx.drawImage(background, 0, 0, cw, ch);
 
     // hitInBrick - przechowuje informacje czy oraz z której stronypiłka uderzyła w bloczek
     let hitInBrick = bricks.hitBrick(ball, powerUp);

@@ -3,6 +3,24 @@ import { ctx } from './main';
 const gapX = 5;
 const gapY = 5;
 
+var brick_img1 = new Image();
+var brick_img2 = new Image();
+var brick_img3 = new Image();
+var brick_img4 = new Image();
+var brick_img5 = new Image();
+var brick_img6 = new Image();
+var brick_img7 = new Image();
+var brick_img8 = new Image();
+brick_img1.src = 'https://cdn.wikimg.net/en/strategywiki/images/5/5c/Arkanoid_Brick_White.png';
+brick_img2.src = 'https://cdn.wikimg.net/en/strategywiki/images/f/f4/Arkanoid_Brick_Cyan.png';
+brick_img3.src = 'https://cdn.wikimg.net/en/strategywiki/images/4/4c/Arkanoid_Brick_Green.png';
+brick_img4.src = 'https://cdn.wikimg.net/en/strategywiki/images/e/eb/Arkanoid_Brick_Orange.png';
+brick_img5.src = 'https://cdn.wikimg.net/en/strategywiki/images/e/e2/Arkanoid_Brick_Red.png';
+brick_img6.src = 'https://cdn.wikimg.net/en/strategywiki/images/1/17/Arkanoid_Brick_Blue.png';
+brick_img7.src = 'https://cdn.wikimg.net/en/strategywiki/images/7/77/Arkanoid_Brick_Violet.png';
+brick_img8.src = 'https://cdn.wikimg.net/en/strategywiki/images/9/91/Arkanoid_Brick_Yellow.png';
+let brick_img = [brick_img1, brick_img2, brick_img3, brick_img4, brick_img5, brick_img6, brick_img7, brick_img8];
+
 class Brick {
     constructor(x, y, width, height) {
         this.x = x;
@@ -14,9 +32,10 @@ class Brick {
     move(y) {
         this.y += y;
     }
-    draw() {
-        ctx.fillStyle = 'rgb(0,0,200)';
+    draw(i) {
+        // ctx.fillStyle = 'rgb(0,0,200)';
         if (this.isOn === true) ctx.fillRect(this.x, this.y, this.width, this.height);
+        if (this.isOn === true) ctx.drawImage(brick_img[i], this.x, this.y, this.width, this.height);
     }
 }
 
@@ -42,7 +61,7 @@ class Bricks {
     drawBricks() {
         for (let i = 0; i < this.numbOfRows; i++) {
             for (let j = 0; j < this.bricksInRow; j++) {
-                this.bricks[i][j].draw();
+                this.bricks[i][j].draw(i);
             }
         }
     }
