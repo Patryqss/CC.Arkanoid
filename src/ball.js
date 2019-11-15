@@ -29,7 +29,9 @@ class Ball {
         this.y = ch - height - this.size;
         this.yBottom = this.y;
         this.isGameStart = false;
+        this.gameOver = false;
         this.score = 0;
+        this.lives = 3;
         this.circlePoints = generatePointsOnTheCircle(this.size, this.x, this.y, 12);
     }
 
@@ -81,7 +83,7 @@ class Ball {
             this.xSpeed = randomSpeed;
             // dobranie y tak aby w zależności od x prędkość wynosiła this.ballSpeed.  y^2 = v^2 - x^2
             this.ySpeed = -Math.abs(Math.sqrt(Math.pow(-this.ballSpeed, 2) - Math.pow(this.xSpeed, 2)));
-            console.log('speed x- ' + this.xSpeed + ' speed y - ' + this.ySpeed);
+            console.log('speed x - ' + this.xSpeed + ' speed y - ' + this.ySpeed);
 
             this.isGameStart = true;
         }
@@ -90,28 +92,24 @@ class Ball {
     // funcja sprawdza czy piłka uderzy w paletkę
     onPaddle(paddle) {
         if (this.x <= paddle.x + paddle.length && this.x >= paddle.x && this.ySpeed > 0) {
-            console.log('trafienie');
             return true;
         }
-        console.log('pudło');
         return false;
     }
 
-    //lives = 3;
     onHit(paddle, hitInBrick, powerUp) {
         //Check if hit sth
 
         // Odbicie od ściany górnej
         if (this.y < this.size - this.size || hitInBrick === 1) {
             this.ySpeed = -this.ySpeed;
-            this.score++
-                document.querySelector(".score").innerText = "Score: " + this.score + ", Lives left:";
         }
 
         if (hitInBrick !== 0) {
-            this.score++
-                document.querySelector(".score").innerText = "Score: " + this.score + ", Lives left:";
+            this.score++;
+            document.querySelector(".score").innerText = this.score;
         }
+        document.querySelector(".lives").innerText = this.lives;
 
         //Winning
         if (this.score == 56) {
@@ -131,18 +129,18 @@ class Ball {
                 if (this.y > ch - paddle.height) {
                     this.xSpeed = -this.xSpeed;
                 }
-            } else if (this.y > ch) {
-                // this.ySpeed = -this.ySpeed;
-                alert("GAME OVER!");
-                document.location.reload();
-                /* lives--;
-                  if (lives == 0) {
-                  alert("GAME OVER!");
-                  document.location.reload();
-                  } else {
-                      this.x = paddle.x + paddle.length / 2;
-                      this.y = paddle.height;
-                  } */
+            } else if (this.y > ch - this.size) {
+                this.lives--;
+                if (this.lives <= 0) {
+                    this.ySpeed = -this.ySpeed;
+
+                    // alert("GAME OVER!");
+                    // document.location.reload();
+                } else {
+                    this.ySpeed = -this.ySpeed;
+                    // alert("GAME OVER!");
+                    // document.location.reload();
+                }
             }
         }
 

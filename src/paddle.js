@@ -6,11 +6,12 @@ class Paddle {
         this.height = 30;
         this.x = x - this.length / 2;
         this.spaceFromBorder = 10;
-        this.xSpeed = 8;
+        this.xSpeed = 20;
     }
     draw() {
         ctx.fillStyle = '#CA540D';
         ctx.fillRect(this.x, ch - this.height, this.length, this.height - this.spaceFromBorder);
+        
     }
     movePaddle(e) {
         switch (e.keyCode) {
@@ -29,6 +30,7 @@ class Paddle {
                     break;
                 }
         }
+    
     }
 }
 export default Paddle;

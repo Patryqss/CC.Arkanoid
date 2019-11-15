@@ -15,6 +15,7 @@ class PowerUp {
         this.coutnerLimit = 400;
         this.isFalling = false;
         this.numOfBall = 3;
+        this.color = 'orange';
     }
 
     move() {
@@ -24,7 +25,7 @@ class PowerUp {
     draw(paddleHeight) {
         // warunek powoduje, że jedoncześnie wyświetla się tylko jeden powerUp
         if (this.isFalling) {
-            ctx.fillStyle = 'orange';
+            ctx.fillStyle = this.color;
             ctx.fillRect(this.x, this.y, this.width, this.height);
             if (this.y >= ch) {
                 this.isFalling = false;
@@ -55,49 +56,42 @@ class PowerUp {
         }
     }
 
-
-    onPaddle(paddle, x) {
-        if (x <= paddle.x + paddle.length && x >= paddle.x) {
-            return true;
-        }
-        return false;
-    }
-
     onHit(paddle) {
-        if (this.y > this.yBottom) {
-            if (this.onPaddle(paddle, this.x)) {
-                console.log("powerUp")
-                this.isFalling = false;
+        if (this.y < this.yBottom) {
+            // console.log(this.yBottom)
+            if (this.x <= paddle.x + paddle.length && this.x >= paddle.x) {
                 return true;
             }
+            this.isFalling = false;
         }
         return false;
     }
 
     // funkcja uruchamiająca powerUP
     runPowerUp(paddle, ball) {
-        let num;
-        if (this.isFalling) {
-            num = Math.floor(Math.random() * 8 + 1);
-        }
+        let num = 1;
+        // if (this.isFalling) {
+        //     num = Math.floor(Math.random() * 9 + 1);
+        // }
 
         if (this.onHit(paddle)) { // czy power up upadł na paletkę
             switch (num) {
                 case 1: // powiększenie piłki
+                    // console.log('runBall');
                     ball.size = 20;
                     break;
-                case 2: // powięszenie paletki
+                case 2: // zmniejszenie piłki
+                    ball.size = 5;
+                    break;
+                case 3: // powięszenie paletki
                     paddle.length = 150;
                     break;
-                case 3: // zmniejszenie paletki
+                case 4: // zmniejszenie paletki
                     paddle.length = 50;
                     break;
-                case 4: // zwiększenie prędkości piłki
+                case 5: // zwiększenie prędkości piłki
                     ball.calcYSpeed(8);
                     break;
-                    // case 5: // zmniejszenie prędkości piłki
-                    //     ball.calcYSpeed(3);
-                    //     break;
                 case 6: // zmniejszenie prędkości paletki
                     paddle.xSpeed = 4;
                     break;
@@ -109,7 +103,12 @@ class PowerUp {
                     ball.powerUpBarrier = true;
                     this.counter = 0; // reset licznika czasu trwania efektu
                     break;
-
+                case 9: // resetuje wszystkie zmiany
+                    ball.size = 10;
+                    paddle.length = 100;
+                    ball.calcYSpeed(6);
+                    paddle.xSpeed = 8;
+                    break;
                 default:
                     break;
             }
