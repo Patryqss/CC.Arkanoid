@@ -11,7 +11,7 @@ export const ch = canvas.height;
 const paddle = new Paddle(cw / 2);
 const ball = new Ball(paddle.x + paddle.length / 2, paddle.height);
 const bricks = new Bricks(8, 7, 80, 30);
-const powerUp = new PowerUp(paddle.x + paddle.length / 2, );
+const powerUp = new PowerUp();
 
 const gameLoop = () => {
     ctx.fillStyle = 'black';

@@ -3,15 +3,15 @@ class LargeBall {
         this.previousSize = 0; // przechowuje wartosć początkową
     }
 
-    large(ball) {
+    large(paddle) {
         // zapisanie wartości początkowej
         if (this.previousSize === 0) {
-            this.previousSize = ball.size;
+            this.previousSize = paddle.length;
         }
 
         // zapobiega nadmiernemu rozrostowi
-        if (ball.size <= this.previousSize * 2) {
-            ball.size *= 1.2;
+        if (paddle.length <= this.previousSize * 2) {
+            paddle.length *= 1.2;
         }
     }
 }

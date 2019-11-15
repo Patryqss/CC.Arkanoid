@@ -1,18 +1,18 @@
-class ShrinkBall {
+class ShrinkPaddle {
     constructor() {
         this.previousSize = 0; // przechowuje wartosć początkową
     }
 
-    shrink(ball) {
+    shrink(paddle) {
         // zapisanie wartości początkowej
         if (this.previousSize === 0) {
-            this.previousSize = ball.size;
+            this.previousSize = paddle.length;
         }
 
         // zapobiega nadmiernemu skurczeniu
-        if (ball.size >= this.previousSize / 2) {
-            ball.size *= 0.9;
+        if (paddle.length >= this.previousSize / 2) {
+            paddle.length *= 0.9;
         }
     }
 }
-export default ShrinkBall;
+export default ShrinkPaddle;
