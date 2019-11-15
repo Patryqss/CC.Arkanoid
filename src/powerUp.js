@@ -1,7 +1,45 @@
 import { ctx, cw, ch } from './main';
+import LargeBall from './powerUps/enLargeBall';
+import ShrinkBall from './powerUps/shrinkBall';
+import LargePaddle from './powerUps/LargePaddle';
+import ShrinkPaddle from './powerUps/ShrinkPaddle';
+import AccelerateBall from './powerUps/AccelerateBall';
+import AcceleratePaddle from './powerUps/AcceleraterPaddle';
+import SlowPaddle from './powerUps/SlowPaddle';
+import Barrier from './powerUps/Barrier';
+
+const largeBall = new LargeBall();
+const shrinkBall = new ShrinkBall();
+const largePaddle = new LargePaddle();
+const shrinkPaddle = new ShrinkPaddle();
+const accelerateBall = new AccelerateBall();
+const acceleratePaddle = new AcceleratePaddle();
+const slowPaddle = new SlowPaddle();
+const barrier = new Barrier();
+
+var lBall = new Image();
+var sBall = new Image();
+var lPaddle = new Image();
+var sPaddle = new Image();
+var accBall = new Image();
+var slPaddle = new Image();
+var accPaddle = new Image();
+var bar = new Image();
+var res = new Image();
+
+lBall.src = 'https://cdn.wikimg.net/en/strategywiki/images/7/70/Arkanoid_2_capsule_Laser.gif';
+sBall.src = 'https://cdn.wikimg.net/en/strategywiki/images/b/be/Arkanoid_2_capsule_Enlarge.gif';
+lPaddle.src = 'https://cdn.wikimg.net/en/strategywiki/images/7/79/Arkanoid_2_capsule_Catch.gif';
+sPaddle.src = 'https://cdn.wikimg.net/en/strategywiki/images/f/fc/Arkanoid_2_capsule_Slow.gif';
+accBall.src = 'https://cdn.wikimg.net/en/strategywiki/images/a/a5/Arkanoid_2_capsule_Player.gif';
+accPaddle.src = 'https://cdn.wikimg.net/en/strategywiki/images/5/5f/Arkanoid_2_capsule_Disrupt.gif';
+slPaddle.src = 'https://cdn.wikimg.net/en/strategywiki/images/f/f1/Arkanoid_2_capsule_Two.gif';
+bar.src = 'https://cdn.wikimg.net/en/strategywiki/images/archive/3/3d/20120407132309%21Arkanoid_2_capsule_Break.gif';
+res.src = 'https://cdn.wikimg.net/en/strategywiki/images/f/f8/Arkanoid_2_capsule_Reduce.gif';
+let powerUpImg = [lBall, sBall, lPaddle, sPaddle, accBall, accPaddle, slPaddle, bar, res];
 
 class PowerUp {
-    constructor() {
+    constructor(ball, paddle) {
         this.x;
         this.y;
 
@@ -12,10 +50,15 @@ class PowerUp {
         this.yBarrier = 10;
         this.barrierIsOn = false;
         this.counter = 0;
-        this.coutnerLimit = 400;
+        this.coutnerLimit = 300;
         this.isFalling = false;
-        this.numOfBall = 3;
-        this.color = 'orange';
+        this.isCreate = false;
+        this.color = 'rgba(0,0,0,0)';
+        this.powerUpNumber = 0;
+        this.backUpBallSize = ball.size;
+        this.backUpPaddleSize = paddle.length;
+        this.backUpBallSpeed = ball.ballSpeed;
+        this.backUpPaddleSpeed = paddle.xSpeed;
     }
 
     move() {
@@ -27,6 +70,7 @@ class PowerUp {
         if (this.isFalling) {
             ctx.fillStyle = this.color;
             ctx.fillRect(this.x, this.y, this.width, this.height);
+            ctx.drawImage(powerUpImg[this.powerUpNumber - 1], this.x, this.y, this.width, this.height);
             if (this.y >= ch) {
                 this.isFalling = false;
             }
@@ -34,7 +78,7 @@ class PowerUp {
 
         // rysowanie bariery
         if (this.barrierIsOn) {
-            ctx.fillStyle = '#0A513D';
+            ctx.fillStyle = '#ff33cc';
             ctx.fillRect(0, ch - this.yBarrier - paddleHeight, cw, this.yBarrier);
             if (this.counter >= this.coutnerLimit) {
                 this.barrierIsOn = false;
@@ -52,62 +96,70 @@ class PowerUp {
             this.x = brick.x;
             this.y = brick.y;
             this.ySpeed = 3;
+            this.powerUpNumber = Math.floor(Math.random() * 9 + 1);
             this.isFalling = true;
+            this.isCreate = true; // potrzebna aby powerUp aktywował się tylko raz.
         }
     }
 
     onHit(paddle) {
-        if (this.y < this.yBottom) {
-            // console.log(this.yBottom)
+        if (this.y > this.yBottom) {
+            this.isFalling = false;
             if (this.x <= paddle.x + paddle.length && this.x >= paddle.x) {
                 return true;
             }
-            this.isFalling = false;
         }
         return false;
     }
 
     // funkcja uruchamiająca powerUP
     runPowerUp(paddle, ball) {
-        let num = 1;
-        // if (this.isFalling) {
-        //     num = Math.floor(Math.random() * 9 + 1);
-        // }
-
-        if (this.onHit(paddle)) { // czy power up upadł na paletkę
-            switch (num) {
+        if (this.onHit(paddle) && this.isCreate) { // czy power up upadł na paletkę
+            this.isCreate = false; // dzięki temu dany power up aktywuje się tylko raz
+            switch (this.powerUpNumber) {
                 case 1: // powiększenie piłki
-                    // console.log('runBall');
-                    ball.size = 20;
+                    // ball.size *= 1.2;
+                    largeBall.large(ball);
                     break;
                 case 2: // zmniejszenie piłki
-                    ball.size = 5;
+                    // ball.size = 5;
+                    shrinkBall.shrink(ball);
                     break;
                 case 3: // powięszenie paletki
-                    paddle.length = 150;
+                    // paddle.length = 150;
+                    largePaddle.large(paddle);
                     break;
                 case 4: // zmniejszenie paletki
-                    paddle.length = 50;
+                    // paddle.length = 50;
+                    shrinkPaddle.shrink(paddle);
                     break;
                 case 5: // zwiększenie prędkości piłki
-                    ball.calcYSpeed(8);
+                    // ball.calcYSpeed(8);
+                    accelerateBall.accelerate(ball);
                     break;
                 case 6: // zmniejszenie prędkości paletki
-                    paddle.xSpeed = 4;
+                    // paddle.xSpeed = 4;
+                    slowPaddle.slow(paddle);
                     break;
                 case 7: // zwiększenie prędkości paletki
-                    paddle.xSpeed = 16;
+                    // paddle.xSpeed = 16;
+                    acceleratePaddle.accelerate(paddle);
                     break;
                 case 8: // stworzenie bariery na x sekund
                     this.barrierIsOn = true;
-                    ball.powerUpBarrier = true;
+                    // ball.powerUpBarrier = true;
+                    barrier.barrierOn(ball);
                     this.counter = 0; // reset licznika czasu trwania efektu
                     break;
                 case 9: // resetuje wszystkie zmiany
-                    ball.size = 10;
-                    paddle.length = 100;
-                    ball.calcYSpeed(6);
-                    paddle.xSpeed = 8;
+                    // ball.size = 10;
+                    // paddle.length = 100;
+                    // ball.calcYSpeed(6);
+                    // paddle.xSpeed = 8;
+                    ball.size = this.backUpBallSize;
+                    paddle.length = this.backUpPaddleSize;
+                    ball.calcYSpeed(this.backUpBallSpeed);
+                    paddle.xSpeed = this.backUpPaddleSpeed;
                     break;
                 default:
                     break;

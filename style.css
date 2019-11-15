@@ -10,10 +10,19 @@ canvas {
     border: black solid 5px;
 }
 
-.score, .score-icon, .lives, .lives-icon {
+.score,
+.score-icon,
+.lives,
+.lives-icon {
     color: black;
     margin-bottom: 10px;
     padding: 3px;
     font-size: 18px;
     font-family: 'Anton', sans-serif;
+}
+
+.power-ups {
+    display: block;
+    font-family: 'Anton', sans-serif;
+    margin: 15px;
 }
