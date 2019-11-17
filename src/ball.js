@@ -112,12 +112,6 @@ class Ball {
         }
         document.querySelector(".lives").innerText = this.lives;
 
-        //Winning
-        if (this.score == 56) {
-            alert("You won, congratulations!");
-            document.location.reload();
-        }
-
         // jeśli bariera jest aktywna, piłka się od niej odbija
         if (powerUp.barrierIsOn && this.y > this.yBottom - powerUp.yBarrier) {
             this.ySpeed = -this.ySpeed;
