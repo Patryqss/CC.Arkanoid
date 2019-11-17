@@ -91,6 +91,18 @@ class Bricks {
         }
         return 0; // zwraca 0 jeśli nie ma zderzenia
     }
+    allBricksOff(){
+        let count = this.numbOfRows * this.bricksInRow;
+        for (let i = 0; i < this.numbOfRows; i++) {
+            for (let j = 0; j < this.bricksInRow; j++) {
+                if(this.bricks[i][j].isOn === false)
+                    count--;
+            }
+        }
+        if(count == 0)
+            return true;
+        return false;
+    }
 }
 
 export default Bricks;
