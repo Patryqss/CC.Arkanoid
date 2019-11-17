@@ -28,6 +28,7 @@ class Brick {
         this.width = width;
         this.height = height;
         this.isOn = true;
+        this.onHit = Math.floor(Math.random() * 2) +1;
     }
     move(y) {
         this.y += y;
@@ -35,7 +36,8 @@ class Brick {
     draw(i) {
         // ctx.fillStyle = 'rgb(0,0,200)';
         if (this.isOn === true) ctx.fillRect(this.x, this.y, this.width, this.height);
-        if (this.isOn === true) ctx.drawImage(brick_img[i], this.x, this.y, this.width, this.height);
+        if (this.isOn === true && this.onHit == 1) ctx.drawImage(brick_img[i], this.x, this.y, this.width, this.height);
+        if (this.isOn === true && this.onHit > 1) ctx.fillStyle = 'rgb(0,0,50)';
     }
 }
 
@@ -74,10 +76,14 @@ class Bricks {
                         ball.circlePoints[cIt].x >= this.bricks[i][j].x &&
                         ball.circlePoints[cIt].y <= this.bricks[i][j].y + this.bricks[i][j].height &&
                         ball.circlePoints[cIt].y >= this.bricks[i][j].y && this.bricks[i][j].isOn) {
-
-                        this.bricks[i][j].isOn = false; // zmiana widoczności bloczka
-                        powerUp.createPowerUp(this.bricks[i][j]); // Uruchamia Power Up
-
+                        
+                        if(this.bricks[i][j].onHit == 1){
+                            this.bricks[i][j].isOn = false; // zmiana widoczności bloczka
+                            powerUp.createPowerUp(this.bricks[i][j]); // Uruchamia Power Up
+                        } else if(this.bricks[i][j].onHit > 1) {
+                            this.bricks[i][j].onHit--;
+                        }
+                        
                         if (ball.circlePoints[cIt].x < this.bricks[i][j].x + this.bricks[i][j].width &&
                             ball.circlePoints[cIt].x > this.bricks[i][j].x) {
                             return 1; // zwraca 1 jeśli piłka odbiła się od ściany górnej lub dolnej
