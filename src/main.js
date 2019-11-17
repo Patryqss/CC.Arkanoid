@@ -20,6 +20,13 @@ const moveRight = 1;
 const moveLeft = -1;
 const stop = 0;
 
+const gameWin = () => {
+    if (bricks.allBricksOff()) {
+        alert("You won, congratulations!");
+        document.location.reload();
+    }
+}
+
 const gameLoop = () => {
     ctx.fillStyle = 'black';
     ctx.fillRect(0, 0, cw, ch); //tło
@@ -37,6 +44,7 @@ const gameLoop = () => {
     ball.draw(paddle);
     bricks.drawBricks();
 
+    gameWin();
     requestAnimationFrame(gameLoop); // ta linijka musi być zawsze na końcu funkcji
 };
 const gameStart = () => {
