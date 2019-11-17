@@ -17,24 +17,11 @@ class Paddle {
 
         ctx.drawImage(pad, this.x - this.length / 5, ch - this.height, this.length * 1.5, this.height);
     }
-    movePaddle(e) {
-        switch (e.keyCode) {
-            case 37:
-                {
-                    if (this.x > 0) {
-                        this.x -= this.xSpeed;
-                    }
-                    break;
-                }
-            case 39:
-                {
-                    if (this.x < cw - this.length) {
-                        this.x += this.xSpeed;
-                    }
-                    break;
-                }
-        }
-
+    movePaddle(direction) {
+        if (this.x < cw - this.length - this.spaceFromBorder && direction * this.xSpeed >= 0)
+            this.x += direction * this.xSpeed;
+        else if (this.x > this.spaceFromBorder && direction * this.xSpeed <= 0)
+            this.x += direction * this.xSpeed;
     }
 }
 export default Paddle;

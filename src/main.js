@@ -16,6 +16,10 @@ const powerUp = new PowerUp(ball, paddle);
 var background = new Image();
 background.src = 'https://www.ctvnews.ca/polopoly_fs/1.4011871.1531487420!/httpImage/image.jpg_gen/derivatives/landscape_620/image.jpg';
 
+const moveRight = 1;
+const moveLeft = -1;
+const stop = 0;
+
 const gameLoop = () => {
     ctx.fillStyle = 'black';
     ctx.fillRect(0, 0, cw, ch); //tło
@@ -35,15 +39,33 @@ const gameLoop = () => {
 
     requestAnimationFrame(gameLoop); // ta linijka musi być zawsze na końcu funkcji
 };
+const gameStart = () => {
+    ball.startBall();
+    ball.move();
+}
 
 document.addEventListener('click', e => {
     console.log(e);
-    ball.startBall();
-    ball.move();
+    gameStart();
 });
 
 document.addEventListener('keydown', e => {
-    paddle.movePaddle(e);
+    switch (e.keyCode) {
+        case 32:{
+            gameStart();
+            break;
+        }
+        case 37:{
+            paddle.movePaddle(moveLeft);
+            break;
+            }
+        case 39:{
+            paddle.movePaddle(moveRight);
+            break;
+            }
+        }
+    
 });
+document.addEventListener('keyup', paddle.movePaddle(stop));
 
 requestAnimationFrame(gameLoop);
