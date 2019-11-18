@@ -9,7 +9,8 @@ class Paddle {
         this.height = 30;
         this.x = x - this.length / 2;
         this.spaceFromBorder = 10;
-        this.xSpeed = 20;
+        this.xSpeed = 8;
+        this.direction = null;
     }
     draw() {
         // ctx.fillStyle = '#CA540D';
@@ -17,11 +18,15 @@ class Paddle {
 
         ctx.drawImage(pad, this.x - this.length / 5, ch - this.height, this.length * 1.5, this.height);
     }
-    movePaddle(direction) {
-        if (this.x < cw - this.length - this.spaceFromBorder && direction * this.xSpeed >= 0)
-            this.x += direction * this.xSpeed;
-        else if (this.x > this.spaceFromBorder && direction * this.xSpeed <= 0)
-            this.x += direction * this.xSpeed;
+    setDirection(dir) {
+        this.direction = dir;
+    }
+    movePaddle() {
+        if (!this.direction) return;
+        if (this.x < cw - this.length - this.spaceFromBorder && this.direction === 'right')
+            this.x += this.xSpeed;
+        else if (this.x > this.spaceFromBorder && this.direction === 'left')
+            this.x -= this.xSpeed;
     }
 }
 export default Paddle;

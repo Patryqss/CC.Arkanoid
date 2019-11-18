@@ -16,10 +16,6 @@ const powerUp = new PowerUp(ball, paddle);
 var background = new Image();
 background.src = 'https://www.ctvnews.ca/polopoly_fs/1.4011871.1531487420!/httpImage/image.jpg_gen/derivatives/landscape_620/image.jpg';
 
-const moveRight = 1;
-const moveLeft = -1;
-const stop = 0;
-
 const gameWin = () => {
     if (bricks.allBricksOff()) {
         alert("You won, congratulations!");
@@ -32,6 +28,7 @@ const gameLoop = () => {
     ctx.fillRect(0, 0, cw, ch); //tło
     ball.move();
     powerUp.move();
+    paddle.movePaddle();
     ctx.drawImage(background, 0, 0, cw, ch);
 
     // hitInBrick - przechowuje informacje czy oraz z której stronypiłka uderzyła w bloczek
@@ -64,16 +61,25 @@ document.addEventListener('keydown', e => {
             break;
         }
         case 37:{
-            paddle.movePaddle(moveLeft);
+            paddle.setDirection('left');
             break;
             }
         case 39:{
-            paddle.movePaddle(moveRight);
+            paddle.setDirection('right');
             break;
             }
         }
     
 });
-document.addEventListener('keyup', paddle.movePaddle(stop));
 
+document.addEventListener('keyup', e => {
+    switch (e.keyCode) {
+      case 37:
+        paddle.setDirection(null);
+        break;
+      case 39:
+        paddle.setDirection(null);
+        break;
+    }
+  });
 requestAnimationFrame(gameLoop);
